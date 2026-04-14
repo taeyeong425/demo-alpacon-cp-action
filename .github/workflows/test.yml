@@ -113,7 +113,7 @@ jobs:
           target-server: 'staging-web-demo'
           target-path: './'
           mode: download
-          username: root
+          username: demo
 
       - name: Verify downloaded file
         run: |
