@@ -22,22 +22,22 @@ jobs:
       - name: Create test file
         run: echo "Test content for upload/download" > test-file.txt
 
-      - name: Test File Upload
+      - name: Test file upload
         uses: ./
         with:
           workspace-url: ${{ secrets.ALPACON_WORKSPACE_URL }}
           api-token: ${{ secrets.ALPACON_API_TOKEN }}
-          source: './hello.txt'
+          source: './test-hello.txt'
           target-server: 'staging-web-demo'
-          target-path: '/tmp/.txt'
+          target-path: '/tmp/test-upload.txt'
 
-      - name: Test File Download
+      - name: Test file download
         uses: ./
         with:
-          workspace-url: ${{ secrets.TEST_ALPACON_WORKSPACE_URL }}
-          api-token: ${{ secrets.TEST_ALPACON_API_TOKEN }}
+          workspace-url: ${{ secrets.ALPACON_WORKSPACE_URL }}
+          api-token: ${{ secrets.ALPACON_API_TOKEN }}
           source: '/tmp/test-upload.txt'
-          target-server: ${{ secrets.TEST_ALPACON_SERVER_NAME }}
+          target-server: 'staging-web-demo'
           target-path: './'
           mode: download
 
@@ -46,21 +46,11 @@ jobs:
           set -e
           echo "Current directory contents:"
           ls -la
-          echo "Checking for downloaded file..."
           if [ -f "test-upload.txt" ]; then
-            echo "✅ File downloaded successfully to current directory"
-            echo "File content:"
+            echo "✅ File downloaded successfully"
             cat test-upload.txt
-            echo "Comparing with original file..."
-            if cmp -s "test-file.txt" "test-upload.txt"; then
-              echo "✅ Downloaded file matches original file"
-            else
-              echo "⚠️  Downloaded file differs from original"
-            fi
           else
-            echo "❌ File download failed - looking for test-upload.txt in current directory"
-            echo "Available files:"
-            find . -maxdepth 1 -name "*test*" -type f 2>/dev/null || echo "No test files found"
+            echo "❌ File download failed"
             exit 1
           fi
 
@@ -78,16 +68,16 @@ jobs:
         run: |
           set -e
           mkdir -p test-dir/sub-dir
-          echo "File 1" > test-dir/file1.txt
-          echo "File 2" > test-dir/sub-dir/file2.txt
+          echo "Test file 1" > test-dir/test-file1.txt
+          echo "Test file 2" > test-dir/sub-dir/test-file2.txt
 
-      - name: Test Recursive Directory Upload
+      - name: Test recursive directory upload
         uses: ./
         with:
-          workspace-url: ${{ secrets.TEST_ALPACON_WORKSPACE_URL }}
-          api-token: ${{ secrets.TEST_ALPACON_API_TOKEN }}
+          workspace-url: ${{ secrets.ALPACON_WORKSPACE_URL }}
+          api-token: ${{ secrets.ALPACON_API_TOKEN }}
           source: './test-dir/'
-          target-server: ${{ secrets.TEST_ALPACON_SERVER_NAME }}
+          target-server: 'staging-web-demo'
           target-path: '/tmp/test-upload-dir/'
           recursive: true
 
@@ -104,23 +94,23 @@ jobs:
       - name: Create test file
         run: echo "Test content with username" > test-file-username.txt
 
-      - name: Test File Upload with username
+      - name: Test file upload with username
         uses: ./
         with:
-          workspace-url: ${{ secrets.TEST_ALPACON_WORKSPACE_URL }}
-          api-token: ${{ secrets.TEST_ALPACON_API_TOKEN }}
+          workspace-url: ${{ secrets.ALPACON_WORKSPACE_URL }}
+          api-token: ${{ secrets.ALPACON_API_TOKEN }}
           source: './test-file-username.txt'
-          target-server: ${{ secrets.TEST_ALPACON_SERVER_NAME }}
+          target-server: 'staging-web-demo'
           target-path: '/tmp/test-upload-username.txt'
           username: root
 
-      - name: Test File Download with username
+      - name: Test file download with username
         uses: ./
         with:
-          workspace-url: ${{ secrets.TEST_ALPACON_WORKSPACE_URL }}
-          api-token: ${{ secrets.TEST_ALPACON_API_TOKEN }}
+          workspace-url: ${{ secrets.ALPACON_WORKSPACE_URL }}
+          api-token: ${{ secrets.ALPACON_API_TOKEN }}
           source: '/tmp/test-upload-username.txt'
-          target-server: ${{ secrets.TEST_ALPACON_SERVER_NAME }}
+          target-server: 'staging-web-demo'
           target-path: './'
           mode: download
           username: root
@@ -129,7 +119,7 @@ jobs:
         run: |
           set -e
           if [ -f "test-upload-username.txt" ]; then
-            echo "✅ File with username option downloaded successfully"
+            echo "✅ File with username downloaded successfully"
             cat test-upload-username.txt
           else
             echo "❌ File download with username failed"
@@ -148,16 +138,16 @@ jobs:
 
       - name: Create test files
         run: |
-          echo "Multi source file 1" > multi-test1.txt
-          echo "Multi source file 2" > multi-test2.txt
+          echo "Multi source test file 1" > test-multi1.txt
+          echo "Multi source test file 2" > test-multi2.txt
 
-      - name: Test Multi-Source Upload
+      - name: Test multi-source upload
         uses: ./
         with:
-          workspace-url: ${{ secrets.TEST_ALPACON_WORKSPACE_URL }}
-          api-token: ${{ secrets.TEST_ALPACON_API_TOKEN }}
+          workspace-url: ${{ secrets.ALPACON_WORKSPACE_URL }}
+          api-token: ${{ secrets.ALPACON_API_TOKEN }}
           source: |
-            ./multi-test1.txt
-            ./multi-test2.txt
-          target-server: ${{ secrets.TEST_ALPACON_SERVER_NAME }}
+            ./test-multi1.txt
+            ./test-multi2.txt
+          target-server: 'staging-web-demo'
           target-path: '/tmp/'
