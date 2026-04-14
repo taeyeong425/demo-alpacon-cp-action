@@ -102,7 +102,7 @@ jobs:
           source: './test-file-username.txt'
           target-server: 'staging-web-demo'
           target-path: '/tmp/test-upload-username.txt'
-          username: root
+          username: demo
 
       - name: Test file download with username
         uses: ./
