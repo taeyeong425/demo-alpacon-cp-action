@@ -25,11 +25,11 @@ jobs:
       - name: Test File Upload
         uses: ./
         with:
-          workspace-url: ${{ secrets.TEST_ALPACON_WORKSPACE_URL }}
-          api-token: ${{ secrets.TEST_ALPACON_API_TOKEN }}
-          source: './test-file.txt'
-          target-server: ${{ secrets.TEST_ALPACON_SERVER_NAME }}
-          target-path: '/tmp/test-upload.txt'
+          workspace-url: ${{ secrets.ALPACON_WORKSPACE_URL }}
+          api-token: ${{ secrets.ALPACON_API_TOKEN }}
+          source: './hello.txt'
+          target-server: 'staging-web-demo'
+          target-path: '/tmp/.txt'
 
       - name: Test File Download
         uses: ./
